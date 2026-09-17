@@ -162,6 +162,13 @@ namespace StarterAssets
             JumpAndGravity();
             GroundedCheck();
             Move();
+
+            // Detección del Roll integrada limpiamente con el Input System de la plantilla
+            if (_input.roll)
+            {
+                _animator.SetTrigger("Roll");
+                _input.roll = false; // Resetea el input para que no se quede en bucle
+            }
         }
 
         private void LateUpdate()
@@ -259,7 +266,7 @@ namespace StarterAssets
             if (_input.move != Vector2.zero)
             {
                 _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-                                  _mainCamera.transform.eulerAngles.y;
+                                    _mainCamera.transform.eulerAngles.y;
                 float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
                     RotationSmoothTime);
 
