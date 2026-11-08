@@ -10,7 +10,6 @@ public class Health : MonoBehaviour
 
     public bool IsDead => currentHealth <= 0f;
 
-    [Header("UI (Asignar solo en el Player)")]
     public Text healthText;
     public GameObject gameOverPanel;
 
