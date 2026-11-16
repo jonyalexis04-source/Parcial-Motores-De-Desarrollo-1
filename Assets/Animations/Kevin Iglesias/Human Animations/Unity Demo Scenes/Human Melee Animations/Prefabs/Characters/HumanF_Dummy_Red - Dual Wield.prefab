@@ -339,6 +339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeapon
   damage: 15
+  isEnemyWeapon: 1
 --- !u!1001 &7072474206242342537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -539,6 +540,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
+  healthText: {fileID: 0}
+  gameOverPanel: {fileID: 0}
 --- !u!65 &6243197897677848990
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -558,5 +561,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.39, y: 2.5683584, z: 1}
-  m_Center: {x: 0, y: 0.7841792, z: 0}
+  m_Size: {x: 1.39, y: 2.0873594, z: 1}
+  m_Center: {x: 0, y: 1.0246787, z: 0}
