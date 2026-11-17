@@ -5,12 +5,15 @@ public class Health : MonoBehaviour
 {
     public float maxHealth = 100f;
     private float currentHealth;
+    public bool hasHitAnimation = false;          
+    public bool hyperArmorWhileAttacking = true;  
+    public float hitStunCooldown = 2.5f;         
+    private float lastHitAnimTime = -99f;
 
     private Animator animator;
 
     public bool IsDead => currentHealth <= 0f;
 
-    [Header("UI (Asignar solo en el Player)")]
     public Text healthText;
     public GameObject gameOverPanel;
 
@@ -40,6 +43,32 @@ public class Health : MonoBehaviour
         {
             Die();
         }
+        else if (hasHitAnimation && animator != null)
+        {
+            Enemy enemyScript = GetComponent<Enemy>();
+            bool isAttacking = (enemyScript != null && enemyScript.attacking);
+
+           
+            if (hyperArmorWhileAttacking && isAttacking)
+            {
+                return;
+            }
+
+    
+            if (Time.time - lastHitAnimTime < hitStunCooldown)
+            {
+                return;
+            }
+
+            lastHitAnimTime = Time.time;
+
+            if (isAttacking)
+            {
+                enemyScript.FinalAni();
+            }
+
+            animator.SetTrigger("Hit");
+        }
     }
 
     private void UpdateHealthUI()
@@ -68,7 +97,6 @@ public class Health : MonoBehaviour
             {
                 enemyScript.enemyWeapon.DisableDamage();
             }
-
 
             GameManager manager = FindFirstObjectByType<GameManager>();
             if (manager != null)
