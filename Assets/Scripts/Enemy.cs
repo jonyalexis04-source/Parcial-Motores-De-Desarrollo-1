@@ -12,6 +12,9 @@ public class Enemy : MonoBehaviour
     private float lastAttackEndTime = -99f;
     private float attackTimer;
 
+    [Header("Daño por Evento de Animación")]
+    public bool useAnimationEventsForDamage = false; 
+
     public int routine;
     public float chronometer;
     public Animator ani;
@@ -124,12 +127,36 @@ public class Enemy : MonoBehaviour
                     attacking = true;
                     attackTimer = 0f;
 
-                    if (enemyWeapon != null)
+                 
+                    if (!useAnimationEventsForDamage && enemyWeapon != null)
                     {
                         enemyWeapon.EnableDamage();
                     }
                 }
             }
+        }
+    }
+
+    public void ActivarPisoton()
+    {
+        if (enemyWeapon != null)
+        {
+            enemyWeapon.EnableDamage();
+
+            Collider col = enemyWeapon.GetComponent<Collider>();
+            if (col != null)
+            {
+                col.enabled = false;
+                col.enabled = true;
+            }
+        }
+    }
+
+    public void DesactivarPisoton()
+    {
+        if (enemyWeapon != null)
+        {
+            enemyWeapon.DisableDamage();
         }
     }
 
