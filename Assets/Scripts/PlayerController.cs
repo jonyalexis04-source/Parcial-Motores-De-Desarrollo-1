@@ -10,6 +10,14 @@ public class PlayerController : MonoBehaviour
     public float jumpCooldown = 0.8f;
     private float nextJumpTime = 0f;
 
+    public float rollSpeed = 12f;
+    public float rollDuration = 0.55f;
+    public float rollCooldown = 0.8f;
+    private bool isRolling = false;
+    private float rollTimer = 0f;
+    private float nextRollTime = 0f;
+    private Vector3 rollDirection;
+
     public Transform cameraTransform;
     public MeleeWeapon meleeWeapon;
 
@@ -17,10 +25,10 @@ public class PlayerController : MonoBehaviour
     public Transform magicSpawnPoint;
     public GameObject magicPrefab;
 
-
     private CharacterController controller;
     private PlayerInputActions inputActions;
     private Animator animator;
+    private Health health;
     private Vector2 moveInput;
     private Vector3 velocity;
     private bool isGrounded;
@@ -29,17 +37,16 @@ public class PlayerController : MonoBehaviour
     private bool canCombo = false;
     private bool inputBuffer = false;
 
-
     private bool isAttacking = false;
     public bool IsAttacking => isAttacking;
 
     private bool isAiming = false;
 
-
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
+        health = GetComponent<Health>();
         inputActions = new PlayerInputActions();
     }
 
@@ -51,13 +58,20 @@ public class PlayerController : MonoBehaviour
     private void OnEnable() => inputActions.Player.Enable();
     private void OnDisable() => inputActions.Player.Disable();
 
-
     private void Update()
     {
         isGrounded = controller.isGrounded;
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
+        }
+
+        if (isRolling)
+        {
+            HandleRollMovement();
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime);
+            return;
         }
 
         isAiming = inputActions.Player.Aim.IsPressed();
@@ -72,10 +86,19 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("IsAiming", isAiming);
         }
 
+        bool rollPressed = inputActions.Player.Roll.triggered;
+
+        if (isGrounded && rollPressed && Time.time >= nextRollTime)
+        {
+            StartRoll();
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime);
+            return;
+        }
+
         HandleMovement();
 
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-
         bool isPlayingJump = stateInfo.IsName("Jump");
 
         if (isGrounded && !isPlayingJump && inputActions.Player.Jump.triggered && Time.time >= nextJumpTime)
@@ -86,15 +109,13 @@ public class PlayerController : MonoBehaviour
             }
 
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-
             nextJumpTime = Time.time + jumpCooldown;
-            
+
             if (animator != null)
             {
                 animator.ResetTrigger("Jump");
                 animator.SetTrigger("Jump");
             }
-
         }
 
         if (inputActions.Player.Attack.triggered)
@@ -104,12 +125,71 @@ public class PlayerController : MonoBehaviour
 
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+    }
 
+    private void StartRoll()
+    {
+        if (isAttacking)
+        {
+            ResetCombo();
+        }
+
+        isRolling = true;
+        rollTimer = rollDuration;
+        nextRollTime = Time.time + rollCooldown;
+
+        if (health != null)
+        {
+            health.isInvulnerable = true;
+        }
+
+        moveInput = inputActions.Player.Move.ReadValue<Vector2>();
+        Vector3 forward = cameraTransform.forward;
+        Vector3 right = cameraTransform.right;
+        forward.y = 0f;
+        right.y = 0f;
+        forward.Normalize();
+        right.Normalize();
+
+        if (moveInput.sqrMagnitude > 0.01f)
+        {
+            rollDirection = (forward * moveInput.y + right * moveInput.x).normalized;
+            transform.rotation = Quaternion.LookRotation(rollDirection);
+        }
+        else
+        {
+            rollDirection = transform.forward;
+        }
+
+        if (animator != null)
+        {
+            animator.ResetTrigger("Roll");
+            animator.SetTrigger("Roll");
+        }
+    }
+
+    private void HandleRollMovement()
+    {
+        controller.Move(rollDirection * rollSpeed * Time.deltaTime);
+
+        rollTimer -= Time.deltaTime;
+        if (rollTimer <= 0f)
+        {
+            EndRoll();
+        }
+    }
+
+    private void EndRoll()
+    {
+        isRolling = false;
+        if (health != null)
+        {
+            health.isInvulnerable = false;
+        }
     }
 
     private void HandleMovement()
     {
-
         moveInput = inputActions.Player.Move.ReadValue<Vector2>();
 
         if (isAttacking)
@@ -151,8 +231,6 @@ public class PlayerController : MonoBehaviour
             Quaternion targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed);
         }
-
-
     }
 
     private void OnAttackInput()
@@ -169,13 +247,10 @@ public class PlayerController : MonoBehaviour
 
     private void ShootMagic()
     {
-        
         if (magicPrefab != null && magicSpawnPoint != null)
         {
-            Vector3 spawnDirection = cameraTransform.forward;
             Quaternion rotation = Quaternion.LookRotation(cameraTransform.forward);
-
-            GameObject spell = Instantiate(magicPrefab, magicSpawnPoint.position, rotation);
+            Instantiate(magicPrefab, magicSpawnPoint.position, rotation);
             if (animator != null)
             {
                 animator.SetTrigger("CastMagic");
@@ -234,7 +309,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     public void ResetCombo()
     {
         comboStep = 0;
@@ -263,5 +337,4 @@ public class PlayerController : MonoBehaviour
             meleeWeapon.DisableDamage();
         }
     }
-
 }

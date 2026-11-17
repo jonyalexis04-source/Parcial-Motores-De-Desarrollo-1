@@ -5,6 +5,8 @@ public class Health : MonoBehaviour
 {
     public float maxHealth = 100f;
     private float currentHealth;
+    public bool isInvulnerable = false;
+
     public bool hasHitAnimation = false;          
     public bool hyperArmorWhileAttacking = true;  
     public float hitStunCooldown = 2.5f;         
@@ -27,7 +29,7 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(float amount)
     {
-        if (IsDead)
+        if (IsDead || isInvulnerable)
         {
             return;
         }
