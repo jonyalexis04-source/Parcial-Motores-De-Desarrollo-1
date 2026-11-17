@@ -1,8 +1,17 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public float walkSpeed = 1f;
+    public float runSpeed = 3f;
+    public float detectionRange = 10f;
+    public float attackRange = 2f;
+
+    public float attackCooldown = 0.4f;
+    public float maxAttackDuration = 2.5f;
+    private float lastAttackEndTime = -99f;
+    private float attackTimer;
+
     public int routine;
     public float chronometer;
     public Animator ani;
@@ -32,6 +41,16 @@ public class Enemy : MonoBehaviour
             return;
         }
 
+        if (attacking)
+        {
+            attackTimer += Time.deltaTime;
+            if (attackTimer >= maxAttackDuration)
+            {
+                FinalAni();
+            }
+            return;
+        }
+
         Health targetHealth = target.GetComponent<Health>();
         if (targetHealth != null && targetHealth.IsDead)
         {
@@ -43,7 +62,7 @@ public class Enemy : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, target.transform.position);
 
-        if (distance > 10)
+        if (distance > detectionRange)
         {
             ani.SetBool("Run", false);
             chronometer += 1 * Time.deltaTime;
@@ -67,14 +86,14 @@ public class Enemy : MonoBehaviour
 
                 case 2:
                     transform.rotation = Quaternion.RotateTowards(transform.rotation, angle, 0.5f);
-                    transform.Translate(Vector3.forward * 1 * Time.deltaTime);
+                    transform.Translate(Vector3.forward * walkSpeed * Time.deltaTime);
                     ani.SetBool("Walk", true);
                     break;
             }
         }
         else
         {
-            if (distance > 2f && !attacking)
+            if (distance > attackRange)
             {
                 var lookPos = target.transform.position - transform.position;
                 lookPos.y = 0;
@@ -83,13 +102,13 @@ public class Enemy : MonoBehaviour
                 ani.SetBool("Walk", false);
 
                 ani.SetBool("Run", true);
-                transform.Translate(Vector3.forward * 3 * Time.deltaTime);
+                transform.Translate(Vector3.forward * runSpeed * Time.deltaTime);
 
                 ani.SetBool("Attack", false);
             }
             else
             {
-                if (distance <= 2f && !attacking)
+                if (Time.time - lastAttackEndTime >= attackCooldown)
                 {
                     var lookPos = target.transform.position - transform.position;
                     lookPos.y = 0;
@@ -101,9 +120,9 @@ public class Enemy : MonoBehaviour
                     ani.SetBool("Walk", false);
                     ani.SetBool("Run", false);
 
-
                     ani.SetBool("Attack", true);
                     attacking = true;
+                    attackTimer = 0f;
 
                     if (enemyWeapon != null)
                     {
@@ -118,6 +137,8 @@ public class Enemy : MonoBehaviour
     {
         ani.SetBool("Attack", false);
         attacking = false;
+        attackTimer = 0f;
+        lastAttackEndTime = Time.time;
 
         if (enemyWeapon != null)
         {
