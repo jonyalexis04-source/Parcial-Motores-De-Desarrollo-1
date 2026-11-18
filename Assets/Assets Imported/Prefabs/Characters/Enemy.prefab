@@ -212,6 +212,68 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeapon
   damage: 10
   isEnemyWeapon: 1
+--- !u!1 &4567758550805108459
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6631593982605672603}
+  m_Layer: 0
+  m_Name: Enemy_Enano
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6631593982605672603
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4567758550805108459}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3849417928102835072}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5410731607587982013
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5218329589003217427}
+  m_Layer: 0
+  m_Name: Enemy_Normal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5218329589003217427
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5410731607587982013}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3849417928102835072}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5871656496520708419
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +308,8 @@ Transform:
   - {fileID: 5910154628650636680}
   - {fileID: 2418798588027994642}
   - {fileID: 5649900658417806385}
+  - {fileID: 6631593982605672603}
+  - {fileID: 5218329589003217427}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &1165881498769355006
@@ -341,7 +405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945296416643b4d46890d3517281c81e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeapon
-  damage: 35
+  damage: 100
   isEnemyWeapon: 1
 --- !u!1 &8461523640239802332
 GameObject:
@@ -691,7 +755,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 70fde19bd34a17e44bc2605054cdffe9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 70fde19bd34a17e44bc2605054cdffe9, type: 3}
       propertyPath: m_TagString
@@ -871,7 +935,7 @@ MonoBehaviour:
   attackRange: 2
   attackCooldown: 0.4
   maxAttackDuration: 2.5
-  useAnimationEventsForDamage: 0
+  useAnimationEventsForDamage: 1
   routine: 0
   chronometer: 0
   ani: {fileID: 0}
@@ -893,11 +957,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 50
+  isInvulnerable: 0
   hasHitAnimation: 0
   hyperArmorWhileAttacking: 1
   hitStunCooldown: 2.5
+  healthBar: {fileID: 0}
   healthText: {fileID: 0}
   gameOverPanel: {fileID: 0}
+  maxMana: 100
+  manaBar: {fileID: 0}
 --- !u!65 &5764050742138840902
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1144,7 +1212,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8468617057500289297, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.7
+      value: -2.78
       objectReference: {fileID: 0}
     - target: {fileID: 8468617057500289297, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1188,7 +1256,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9137032837993464747, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9137032837993464747, guid: 4534b9cc6330aed499be54b02abf5283, type: 3}
       propertyPath: m_TagString
@@ -1243,8 +1311,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.7900002, y: 3.4390247, z: 1.75}
-  m_Center: {x: 0.05999994, y: 1.78, z: -0.06000002}
+  m_Size: {x: 1.58, y: 3.07, z: 1}
+  m_Center: {x: 0, y: 1.54, z: 0.01}
 --- !u!114 &1862595979110238684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1285,11 +1353,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 2000
+  isInvulnerable: 0
   hasHitAnimation: 1
   hyperArmorWhileAttacking: 1
   hitStunCooldown: 4
+  healthBar: {fileID: 0}
   healthText: {fileID: 0}
   gameOverPanel: {fileID: 0}
+  maxMana: 100
+  manaBar: {fileID: 0}
 --- !u!54 &1346383462853954048
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1392,7 +1464,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: dfe899546815f974788a89df67bbd472, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: dfe899546815f974788a89df67bbd472, type: 3}
       propertyPath: m_TagString
@@ -1737,10 +1809,10 @@ MonoBehaviour:
   walkSpeed: 2
   runSpeed: 5
   detectionRange: 15
-  attackRange: 2.5
+  attackRange: 2
   attackCooldown: 0.4
   maxAttackDuration: 2.5
-  useAnimationEventsForDamage: 0
+  useAnimationEventsForDamage: 1
   routine: 0
   chronometer: 0
   ani: {fileID: 0}
@@ -1762,11 +1834,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
+  isInvulnerable: 0
   hasHitAnimation: 0
   hyperArmorWhileAttacking: 1
   hitStunCooldown: 2.5
+  healthBar: {fileID: 0}
   healthText: {fileID: 0}
   gameOverPanel: {fileID: 0}
+  maxMana: 100
+  manaBar: {fileID: 0}
 --- !u!65 &3420290634352733493
 BoxCollider:
   m_ObjectHideFlags: 0

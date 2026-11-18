@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using MagicPigGames;
 
 public class Health : MonoBehaviour
 {
@@ -18,15 +19,23 @@ public class Health : MonoBehaviour
 
     public bool IsDead => currentHealth <= 0f;
 
+    public ProgressBar healthBar;
     public Text healthText;
     public GameObject gameOverPanel;
+
+    public float maxMana = 100f;
+    private float currentMana;
+    public float CurrentMana => currentMana;
+    public ProgressBar manaBar;
 
     private void Start()
     {
         currentHealth = maxHealth;
+        currentMana = maxMana;
         animator = GetComponentInChildren<Animator>();
 
         UpdateHealthUI();
+        UpdateManaUI();
     }
 
     public void TakeDamage(float amount)
@@ -88,8 +97,40 @@ public class Health : MonoBehaviour
         UpdateHealthUI();
     }
 
+    public bool UseMana(float amount)
+    {
+        if (currentMana >= amount)
+        {
+            currentMana -= amount;
+            currentMana = Mathf.Clamp(currentMana, 0f, maxMana);
+            UpdateManaUI();
+            return true;
+        }
+        return false;
+    }
+
+    public void RestoreMana(float amount)
+    {
+        currentMana = Mathf.Clamp(currentMana + amount, 0f, maxMana);
+        UpdateManaUI();
+    }
+
+    private void UpdateManaUI()
+    {
+        if (manaBar != null)
+        {
+            float manaPercent = currentMana / maxMana;
+            Debug.Log($"Actualizando barra de maná:" + manaPercent);
+            manaBar.SetProgress(manaPercent);
+        }
+    }
     private void UpdateHealthUI()
     {
+        if(healthBar != null)
+        {
+            healthBar.SetProgress(currentHealth / maxHealth);
+        }
+
         if (healthText != null)
         {
             healthText.text = $"Vida: {currentHealth}";
