@@ -5,11 +5,13 @@ public class Health : MonoBehaviour
 {
     public float maxHealth = 100f;
     private float currentHealth;
+    public float CurrentHealth => currentHealth;
+
     public bool isInvulnerable = false;
 
-    public bool hasHitAnimation = false;          
-    public bool hyperArmorWhileAttacking = true;  
-    public float hitStunCooldown = 2.5f;         
+    public bool hasHitAnimation = false;
+    public bool hyperArmorWhileAttacking = true;
+    public float hitStunCooldown = 2.5f;
     private float lastHitAnimTime = -99f;
 
     private Animator animator;
@@ -50,13 +52,11 @@ public class Health : MonoBehaviour
             Enemy enemyScript = GetComponent<Enemy>();
             bool isAttacking = (enemyScript != null && enemyScript.attacking);
 
-           
             if (hyperArmorWhileAttacking && isAttacking)
             {
                 return;
             }
 
-    
             if (Time.time - lastHitAnimTime < hitStunCooldown)
             {
                 return;
@@ -69,8 +69,23 @@ public class Health : MonoBehaviour
                 enemyScript.FinalAni();
             }
 
+            PlayerController playerScript = GetComponent<PlayerController>();
+            if (playerScript != null && playerScript.IsAttacking)
+            {
+                playerScript.ResetCombo();
+            }
+
+            animator.ResetTrigger("Hit");
             animator.SetTrigger("Hit");
         }
+    }
+
+    public void Heal(float amount)
+    {
+        if (IsDead) return;
+
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0f, maxHealth);
+        UpdateHealthUI();
     }
 
     private void UpdateHealthUI()
@@ -121,16 +136,11 @@ public class Health : MonoBehaviour
             }
         }
 
-        Collider col = GetComponent<Collider>();
-        if (col != null)
+        
+        Collider[] allColliders = GetComponentsInChildren<Collider>();
+        foreach (Collider c in allColliders)
         {
-            col.isTrigger = false;
-        }
-
-        CharacterController cc = GetComponent<CharacterController>();
-        if (cc != null)
-        {
-            cc.detectCollisions = false;
+            c.enabled = false;
         }
     }
 }
