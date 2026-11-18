@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,11 +13,19 @@ public class PlayerController : MonoBehaviour
 
     public float rollSpeed = 12f;
     public float rollDuration = 0.55f;
-    public float rollCooldown = 0.8f;
+    public float iFramesDuration = 0.35f;
+    public float rollCooldown = 1.15f;
     private bool isRolling = false;
     private float rollTimer = 0f;
     private float nextRollTime = 0f;
     private Vector3 rollDirection;
+
+    public float maxMana = 100f;
+    public float currentMana = 100f;
+    public float magicManaCost = 20f;
+    public float magicCooldown = 0.8f;
+    private float nextMagicTime = 0f;
+    public Text manaText;
 
     public Transform cameraTransform;
     public MeleeWeapon meleeWeapon;
@@ -52,6 +61,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        currentMana = maxMana;
+        UpdateManaUI();
         ResetCombo();
     }
 
@@ -173,6 +184,13 @@ public class PlayerController : MonoBehaviour
         controller.Move(rollDirection * rollSpeed * Time.deltaTime);
 
         rollTimer -= Time.deltaTime;
+
+        float elapsedRollTime = rollDuration - rollTimer;
+        if (elapsedRollTime >= iFramesDuration && health != null && health.isInvulnerable)
+        {
+            health.isInvulnerable = false;
+        }
+
         if (rollTimer <= 0f)
         {
             EndRoll();
@@ -247,14 +265,43 @@ public class PlayerController : MonoBehaviour
 
     private void ShootMagic()
     {
+        if (Time.time < nextMagicTime)
+        {
+            return;
+        }
+
+        if (currentMana < magicManaCost)
+        {
+            Debug.Log("Sin maná suficiente.");
+            return;
+        }
+
         if (magicPrefab != null && magicSpawnPoint != null)
         {
+            currentMana -= magicManaCost;
+            nextMagicTime = Time.time + magicCooldown;
+            UpdateManaUI();
+
             Quaternion rotation = Quaternion.LookRotation(cameraTransform.forward);
             Instantiate(magicPrefab, magicSpawnPoint.position, rotation);
             if (animator != null)
             {
                 animator.SetTrigger("CastMagic");
             }
+        }
+    }
+
+    public void RestoreMana(float amount)
+    {
+        currentMana = Mathf.Clamp(currentMana + amount, 0f, maxMana);
+        UpdateManaUI();
+    }
+
+    private void UpdateManaUI()
+    {
+        if (manaText != null)
+        {
+            manaText.text = $"Maná: {currentMana}/{maxMana}";
         }
     }
 
