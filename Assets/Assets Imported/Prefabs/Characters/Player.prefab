@@ -78,6 +78,7 @@ GameObject:
   - component: {fileID: 7437766346185184384}
   - component: {fileID: 6439843793683730612}
   - component: {fileID: 3302065158474937228}
+  - component: {fileID: 3650602022904132067}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -223,11 +224,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   walkSpeed: 5
-  runSpeed: 10
+  runSpeed: 9
   jumpHeight: 1.5
   rotationSpeed: 0.15
   gravity: -9.81
   jumpCooldown: 0.8
+  rollSpeed: 15
+  rollDuration: 0.55
+  iFramesDuration: 0.35
+  rollCooldown: 1.15
+  maxMana: 100
+  currentMana: 100
+  magicManaCost: 20
+  magicCooldown: 0.8
+  manaText: {fileID: 0}
   cameraTransform: {fileID: 0}
   meleeWeapon: {fileID: 3505162514340203032}
   weaponInHand: {fileID: 3081903546717916287}
@@ -260,11 +270,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
+  isInvulnerable: 0
   hasHitAnimation: 0
   hyperArmorWhileAttacking: 1
   hitStunCooldown: 2.5
   healthText: {fileID: 0}
   gameOverPanel: {fileID: 0}
+--- !u!114 &3650602022904132067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8774738557725801392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16b81da0aeed43a47960c8a14b616848, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HotbarManager
+  healthPotions: 0
+  manaPotions: 0
+  hasKey: 0
+  hasAxeUpgrade: 0
+  slot1Text: {fileID: 0}
+  slot2Text: {fileID: 0}
+  healthIcon: {fileID: 0}
+  manaIcon: {fileID: 0}
+  keyIcon: {fileID: 0}
 --- !u!1001 &684359502582644861
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -820,6 +852,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6121563198117294105, guid: 3b8ab6e871fce604f868a0eb40111eca, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 6899507924944743075, guid: 3b8ab6e871fce604f868a0eb40111eca, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -945,6 +981,10 @@ PrefabInstance:
     - target: {fileID: 596771400668729102, guid: 5891485f1f429a14e87a01628842307d, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 596771400668729102, guid: 5891485f1f429a14e87a01628842307d, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 6189023500858380238, guid: 5891485f1f429a14e87a01628842307d, type: 3}
       propertyPath: m_Controller
@@ -1693,6 +1733,10 @@ PrefabInstance:
     - target: {fileID: 8973146141492562344, guid: f9d6a48488034e14f848e989e667164d, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8973146141492562344, guid: f9d6a48488034e14f848e989e667164d, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

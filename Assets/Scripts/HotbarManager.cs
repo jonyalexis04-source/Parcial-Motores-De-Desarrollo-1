@@ -10,7 +10,9 @@ public class HotbarManager : MonoBehaviour
     public bool hasAxeUpgrade = false;
 
     public TMP_Text slot1Text; 
-    public TMP_Text slot2Text; 
+    public TMP_Text slot2Text;
+    public Image healthIcon;
+    public Image manaIcon;
     public Image keyIcon;  
 
     private Health playerHealth;
@@ -90,17 +92,25 @@ public class HotbarManager : MonoBehaviour
         }
     }
 
-    private void UpdateHotbarUI()
+    public void UpdateHotbarUI()
     {
         if (slot1Text != null)
         {
             slot1Text.text = healthPotions.ToString();
         }
-
+        if (healthIcon != null)
+        {
+            healthIcon.color = healthPotions > 0 ? Color.white : new Color(1f, 1f, 1f, 0.25f);
+        }
 
         if (slot2Text != null)
         {
             slot2Text.text = manaPotions.ToString(); ;
+        }
+
+        if (manaIcon != null)
+        {
+            manaIcon.color = manaPotions > 0 ? Color.white : new Color(1f, 1f, 1f, 0.25f);
         }
 
         if (keyIcon != null)
