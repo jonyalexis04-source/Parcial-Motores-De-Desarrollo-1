@@ -19,13 +19,10 @@ public class PlayerController : MonoBehaviour
     private float rollTimer = 0f;
     private float nextRollTime = 0f;
     private Vector3 rollDirection;
-
-    public float maxMana = 100f;
-    public float currentMana = 100f;
+   
     public float magicManaCost = 20f;
     public float magicCooldown = 0.8f;
     private float nextMagicTime = 0f;
-    public Text manaText;
 
     public Transform cameraTransform;
     public MeleeWeapon meleeWeapon;
@@ -61,8 +58,6 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        currentMana = maxMana;
-        UpdateManaUI();
         ResetCombo();
     }
 
@@ -270,17 +265,16 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (currentMana < magicManaCost)
+        if (magicPrefab != null && magicSpawnPoint != null && health != null)
         {
-            Debug.Log("Sin maná suficiente.");
-            return;
-        }
+            // Intentamos descontar el maná directamente en Health.cs
+            if (!health.UseMana(magicManaCost))
+            {
+                Debug.Log("Sin maná suficiente.");
+                return;
+            }
 
-        if (magicPrefab != null && magicSpawnPoint != null)
-        {
-            currentMana -= magicManaCost;
             nextMagicTime = Time.time + magicCooldown;
-            UpdateManaUI();
 
             Quaternion rotation = Quaternion.LookRotation(cameraTransform.forward);
             Instantiate(magicPrefab, magicSpawnPoint.position, rotation);
@@ -293,15 +287,9 @@ public class PlayerController : MonoBehaviour
 
     public void RestoreMana(float amount)
     {
-        currentMana = Mathf.Clamp(currentMana + amount, 0f, maxMana);
-        UpdateManaUI();
-    }
-
-    private void UpdateManaUI()
-    {
-        if (manaText != null)
+        if (health != null)
         {
-            manaText.text = $"Maná: {currentMana}/{maxMana}";
+            health.RestoreMana(amount);
         }
     }
 

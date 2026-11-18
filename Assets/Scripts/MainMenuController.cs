@@ -32,7 +32,7 @@ public class MainMenuController : MonoBehaviour
     }
     public void CargarJuego()
     {
-        SceneManager.LoadScene("NombreDeTuEscenaDeJuego");
+        SceneManager.LoadScene("Mapa-Alan");
     }
     public void SalirDelJuego()
     {
