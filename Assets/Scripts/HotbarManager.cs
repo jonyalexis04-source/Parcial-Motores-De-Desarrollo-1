@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class HotbarManager : MonoBehaviour
 {
@@ -8,10 +9,9 @@ public class HotbarManager : MonoBehaviour
     public bool hasKey = false;
     public bool hasAxeUpgrade = false;
 
-    public Text slot1Text; 
-    public Text slot2Text; 
-    public Text slot3Text; 
-    public Text slot4Text; 
+    public TMP_Text slot1Text; 
+    public TMP_Text slot2Text; 
+    public Image keyIcon;  
 
     private Health playerHealth;
     private PlayerController playerController;
@@ -24,13 +24,13 @@ public class HotbarManager : MonoBehaviour
     }
 
     private void Update()
-    {
-        if (UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.eKey.wasPressedThisFrame)
+    {        
+        if (UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.digit1Key.wasPressedThisFrame)
         {
             UseHealthPotion();
         }
 
-        if (UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.qKey.wasPressedThisFrame)
+        if (UnityEngine.InputSystem.Keyboard.current != null && UnityEngine.InputSystem.Keyboard.current.digit2Key.wasPressedThisFrame)
         {
             UseManaPotion();
         }
@@ -65,7 +65,7 @@ public class HotbarManager : MonoBehaviour
         if (healthPotions > 0 && playerHealth != null)
         {
             healthPotions--;
-            playerHealth.Heal(50f); 
+            playerHealth.Heal(50f);
             Debug.Log("Poción de vida consumida.");
             UpdateHotbarUI();
         }
@@ -92,8 +92,20 @@ public class HotbarManager : MonoBehaviour
 
     private void UpdateHotbarUI()
     {
-        if (slot3Text != null) slot3Text.text = $"Vida (3): {healthPotions}";
-        if (slot2Text != null) slot2Text.text = $"Maná (2): {manaPotions}";
-        if (slot4Text != null) slot4Text.text = $"Llave (4): {(hasKey ? "Sí" : "No")}";
+        if (slot1Text != null)
+        {
+            slot1Text.text = healthPotions.ToString();
+        }
+
+
+        if (slot2Text != null)
+        {
+            slot2Text.text = manaPotions.ToString(); ;
+        }
+
+        if (keyIcon != null)
+        {
+            keyIcon.color = hasKey ? Color.white : new Color(1f, 1f, 1f, 0.25f);
+        }
     }
 }
