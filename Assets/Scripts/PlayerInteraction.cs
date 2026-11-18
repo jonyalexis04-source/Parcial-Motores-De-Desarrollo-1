@@ -25,7 +25,7 @@ public class PlayerInteraction : MonoBehaviour
             InteractiveDoor door = hit.collider.GetComponent<InteractiveDoor>();
             if (door != null)
             {
-                door.Interact();
+                door.Interact(this.gameObject);
             }
         }
     }
