@@ -975,7 +975,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.07714286
+      - time: 0.020605754
         functionName: EnableWeaponDamage
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -984,6 +984,13 @@ ModelImporter:
         messageOptions: 0
       - time: 0.16285717
         functionName: OpenComboWindow
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.5335689
+        functionName: golpe
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -1096,6 +1103,13 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.42441913
+        functionName: golpe
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -1191,6 +1205,13 @@ ModelImporter:
         messageOptions: 0
       - time: 0.81142855
         functionName: ResetCombo
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.32573396
+        functionName: golpe
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
