@@ -522,9 +522,9 @@ MonoBehaviour:
   isFinalBoss: 0
   maxHealth: 50
   isInvulnerable: 0
-  hasHitAnimation: 0
-  hyperArmorWhileAttacking: 1
-  hitStunCooldown: 2.5
+  hasHitAnimation: 1
+  hyperArmorWhileAttacking: 0
+  hitStunCooldown: 1
   healthBar: {fileID: 0}
   healthText: {fileID: 0}
   gameOverPanel: {fileID: 0}
@@ -2879,6 +2879,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeapon
   damage: 10
   isEnemyWeapon: 1
+  dealsKnockback: 0
 --- !u!1 &8487004588559533594
 GameObject:
   m_ObjectHideFlags: 0

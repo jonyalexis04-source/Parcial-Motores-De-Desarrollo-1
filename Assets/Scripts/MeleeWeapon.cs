@@ -6,6 +6,7 @@ public class MeleeWeapon : MonoBehaviour
     private bool canDealDamage = false;
 
     public bool isEnemyWeapon = false; 
+    public bool dealsKnockback = false;
 
     public void EnableDamage()
     {
@@ -37,7 +38,7 @@ public class MeleeWeapon : MonoBehaviour
         Health targetHealth = other.GetComponent<Health>();
         if (targetHealth != null)
         {
-            targetHealth.TakeDamage(damage);
+            targetHealth.TakeDamage(damage, dealsKnockback, transform.position);
 
             canDealDamage = false;
         }
