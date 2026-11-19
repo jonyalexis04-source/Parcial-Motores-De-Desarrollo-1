@@ -121123,6 +121123,10 @@ PrefabInstance:
       propertyPath: hyperArmorWhileAttacking
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5418127362522498652, guid: 500bc806847faad43a3f63759b7c84e0, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6114696025059064006, guid: 500bc806847faad43a3f63759b7c84e0, type: 3}
       propertyPath: keyIcon
       value: 

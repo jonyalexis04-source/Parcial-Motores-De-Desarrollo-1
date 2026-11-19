@@ -320,4 +320,9 @@ public class Enemy : MonoBehaviour
             enemyWeapon.DisableDamage();
         }
     }
+
+    public void paso()
+    {
+
+    }
 }
