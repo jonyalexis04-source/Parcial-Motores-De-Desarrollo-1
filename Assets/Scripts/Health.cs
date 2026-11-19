@@ -4,6 +4,8 @@ using MagicPigGames;
 
 public class Health : MonoBehaviour
 {
+    public bool isFinalBoss = false;
+
     public float maxHealth = 100f;
     private float currentHealth;
     public float CurrentHealth => currentHealth;
@@ -22,6 +24,10 @@ public class Health : MonoBehaviour
     public ProgressBar healthBar;
     public Text healthText;
     public GameObject gameOverPanel;
+
+    public Slider uiHealthSlider;
+    public Image uiHealthFillImage;
+    public GameObject healthBarRoot;
 
     public float maxMana = 100f;
     private float currentMana;
@@ -124,11 +130,24 @@ public class Health : MonoBehaviour
             manaBar.SetProgress(manaPercent);
         }
     }
+
     private void UpdateHealthUI()
     {
-        if(healthBar != null)
+        float ratio = maxHealth > 0f ? (currentHealth / maxHealth) : 0f;
+
+        if (healthBar != null)
         {
-            healthBar.SetProgress(currentHealth / maxHealth);
+            healthBar.SetProgress(ratio);
+        }
+
+        if (uiHealthSlider != null)
+        {
+            uiHealthSlider.value = ratio;
+        }
+
+        if (uiHealthFillImage != null)
+        {
+            uiHealthFillImage.fillAmount = ratio;
         }
 
         if (healthText != null)
@@ -141,8 +160,17 @@ public class Health : MonoBehaviour
     {
         Debug.Log($"{gameObject.name} ha muerto.");
 
+        if (healthBarRoot != null)
+        {
+            healthBarRoot.SetActive(false);
+        }
+
         if (animator != null)
         {
+            animator.SetBool("Walk", false);
+            animator.SetBool("Run", false);
+            animator.SetBool("Attack", false);
+            animator.ResetTrigger("Die");
             animator.SetTrigger("Die");
         }
 
@@ -159,7 +187,14 @@ public class Health : MonoBehaviour
             GameManager manager = FindFirstObjectByType<GameManager>();
             if (manager != null)
             {
-                manager.CheckEnemiesAlive();
+                if (isFinalBoss)
+                {
+                    manager.TriggerVictory();
+                }
+                else
+                {
+                    manager.CheckEnemiesAlive();
+                }
             }
         }
 
@@ -177,30 +212,43 @@ public class Health : MonoBehaviour
             }
         }
 
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.isKinematic = true;
+        }
+
         Collider[] allColliders = GetComponentsInChildren<Collider>();
         foreach (Collider c in allColliders)
         {
-            c.enabled = false;
+            if (c.isTrigger)
+            {
+                c.enabled = false;
+            }
         }
     }
 
     public void RespawnHeal()
     {
-        Debug.Log("[Health] Entrando a RespawnHeal");
         currentHealth = maxHealth;
         currentMana = maxMana;
+
+        if (healthBarRoot != null)
+        {
+            healthBarRoot.SetActive(true);
+        }
 
         UpdateHealthUI();
         UpdateManaUI();
 
-        Debug.Log($"[Health] gameOverPanel asignado: {gameOverPanel != null}");
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(false);
         }
 
         PlayerController playerScript = GetComponent<PlayerController>();
-        Debug.Log($"[Health] playerScript: {playerScript}");
         if (playerScript != null)
         {
             playerScript.enabled = true;
@@ -215,6 +263,5 @@ public class Health : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        Debug.Log("[Health] RespawnHeal terminado");
     }
 }
