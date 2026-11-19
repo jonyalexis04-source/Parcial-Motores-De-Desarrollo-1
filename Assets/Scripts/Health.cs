@@ -44,7 +44,7 @@ public class Health : MonoBehaviour
         UpdateManaUI();
     }
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(float amount, bool applyKnockback = false, Vector3 hitSourcePosition = default)
     {
         if (IsDead || isInvulnerable)
         {
@@ -61,8 +61,30 @@ public class Health : MonoBehaviour
         if (IsDead)
         {
             Die();
+            return;
         }
-        else if (hasHitAnimation && animator != null)
+
+        PlayerController playerScript = GetComponent<PlayerController>();
+        if (playerScript != null)
+        {
+            if (applyKnockback)
+            {
+                playerScript.ApplyHitFeedback(true, hitSourcePosition);
+                return;
+            }
+            else if (hasHitAnimation)
+            {
+                if (Time.time - lastHitAnimTime < hitStunCooldown)
+                {
+                    return;
+                }
+                lastHitAnimTime = Time.time;
+                playerScript.ApplyHitFeedback(false, hitSourcePosition);
+                return;
+            }
+        }
+
+        if (hasHitAnimation && animator != null)
         {
             Enemy enemyScript = GetComponent<Enemy>();
             bool isAttacking = (enemyScript != null && enemyScript.attacking);
@@ -82,12 +104,6 @@ public class Health : MonoBehaviour
             if (isAttacking)
             {
                 enemyScript.FinalAni();
-            }
-
-            PlayerController playerScript = GetComponent<PlayerController>();
-            if (playerScript != null && playerScript.IsAttacking)
-            {
-                playerScript.ResetCombo();
             }
 
             animator.ResetTrigger("Hit");

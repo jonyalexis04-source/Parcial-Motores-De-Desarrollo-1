@@ -914,6 +914,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeapon
   damage: 100
   isEnemyWeapon: 1
+  dealsKnockback: 1
 --- !u!1 &2807062529735908366
 GameObject:
   m_ObjectHideFlags: 0

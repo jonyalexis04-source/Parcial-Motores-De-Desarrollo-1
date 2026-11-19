@@ -68,6 +68,10 @@ public class HotbarManager : MonoBehaviour
         {
             healthPotions--;
             playerHealth.Heal(50f);
+            if (playerController != null)
+            {
+                playerController.PlayDrinkPotionAnimation();
+            }
             Debug.Log("Poción de vida consumida.");
             UpdateHotbarUI();
         }
@@ -83,6 +87,7 @@ public class HotbarManager : MonoBehaviour
         {
             manaPotions--;
             playerController.RestoreMana(50f);
+            playerController.PlayDrinkPotionAnimation();
             Debug.Log("Poción de maná consumida.");
             UpdateHotbarUI();
         }

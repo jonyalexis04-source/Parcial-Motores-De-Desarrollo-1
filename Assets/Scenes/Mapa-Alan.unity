@@ -50171,6 +50171,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9188997473122392525, guid: 5fd24a8bb3a912b42ba30cb86b648519, type: 3}
+      propertyPath: damage
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -113745,7 +113749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6777226191782069927, guid: 5fd24a8bb3a912b42ba30cb86b648519, type: 3}
       propertyPath: maxHealth
-      value: 500
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 6777226191782069927, guid: 5fd24a8bb3a912b42ba30cb86b648519, type: 3}
       propertyPath: isFinalBoss
@@ -113758,6 +113762,14 @@ PrefabInstance:
     - target: {fileID: 8454322942462231304, guid: 5fd24a8bb3a912b42ba30cb86b648519, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9188997473122392525, guid: 5fd24a8bb3a912b42ba30cb86b648519, type: 3}
+      propertyPath: damage
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 9188997473122392525, guid: 5fd24a8bb3a912b42ba30cb86b648519, type: 3}
+      propertyPath: dealsKnockback
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -121840,6 +121852,18 @@ PrefabInstance:
       propertyPath: gameOverPanel
       value: 
       objectReference: {fileID: 1579280514}
+    - target: {fileID: 3302065158474937228, guid: 500bc806847faad43a3f63759b7c84e0, type: 3}
+      propertyPath: hasHitAnimation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3302065158474937228, guid: 500bc806847faad43a3f63759b7c84e0, type: 3}
+      propertyPath: hitStunCooldown
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3302065158474937228, guid: 500bc806847faad43a3f63759b7c84e0, type: 3}
+      propertyPath: hyperArmorWhileAttacking
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6114696025059064006, guid: 500bc806847faad43a3f63759b7c84e0, type: 3}
       propertyPath: keyIcon
       value: 
@@ -121873,8 +121897,7 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 1985424873764153628, guid: 500bc806847faad43a3f63759b7c84e0, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 500bc806847faad43a3f63759b7c84e0, type: 3}
@@ -144317,6 +144340,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9188997473122392525, guid: 5fd24a8bb3a912b42ba30cb86b648519, type: 3}
+      propertyPath: damage
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -151827,8 +151854,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 945296416643b4d46890d3517281c81e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeapon
-  damage: 100
+  damage: 15
   isEnemyWeapon: 1
+  dealsKnockback: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

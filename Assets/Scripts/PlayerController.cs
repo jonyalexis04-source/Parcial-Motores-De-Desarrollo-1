@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     private float rollTimer = 0f;
     private float nextRollTime = 0f;
     private Vector3 rollDirection;
-   
+
     public float magicManaCost = 20f;
     public float magicCooldown = 0.8f;
     private float nextMagicTime = 0f;
@@ -31,6 +31,12 @@ public class PlayerController : MonoBehaviour
     public GameObject weaponInHand;
     public Transform magicSpawnPoint;
     public GameObject magicPrefab;
+
+    [Header("Hit / Knockback")]
+    public float knockbackForce = 8f;
+    public float knockbackDuration = 0.2f;
+    private Vector3 knockbackVelocity = Vector3.zero;
+    private float knockbackTimer = 0f;
 
     private CharacterController controller;
     private PlayerInputActions inputActions;
@@ -46,7 +52,6 @@ public class PlayerController : MonoBehaviour
 
     private bool isAttacking = false;
     public bool IsAttacking => isAttacking;
-
     private bool isAiming = false;
 
     private void Awake()
@@ -93,7 +98,7 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("IsAiming", isAiming);
         }
 
-        if(magicCrosshair != null)
+        if (magicCrosshair != null)
         {
             magicCrosshair.SetActive(isAiming);
         }
@@ -110,8 +115,12 @@ public class PlayerController : MonoBehaviour
 
         HandleMovement();
 
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        bool isPlayingJump = stateInfo.IsName("Jump");
+        bool isPlayingJump = false;
+        if (animator != null)
+        {
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            isPlayingJump = stateInfo.IsName("Jump");
+        }
 
         if (isGrounded && !isPlayingJump && inputActions.Player.Jump.triggered && Time.time >= nextJumpTime)
         {
@@ -135,8 +144,63 @@ public class PlayerController : MonoBehaviour
             OnAttackInput();
         }
 
+        if (knockbackTimer > 0f)
+        {
+            controller.Move(knockbackVelocity * Time.deltaTime);
+            knockbackTimer -= Time.deltaTime;
+            if (knockbackTimer <= 0f)
+            {
+                knockbackVelocity = Vector3.zero;
+            }
+        }
+
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    public void ApplyHitFeedback(bool isHeavyKnockback, Vector3 hitSourcePosition)
+    {
+        if (isRolling)
+        {
+            return;
+        }
+
+        if (isAttacking)
+        {
+            ResetCombo();
+        }
+
+        if (animator != null)
+        {
+            if (isHeavyKnockback)
+            {
+                animator.ResetTrigger("Knockback");
+                animator.SetTrigger("Knockback");
+            }
+            else
+            {
+                animator.ResetTrigger("Hit");
+                animator.SetTrigger("Hit");
+            }
+        }
+
+        if (isHeavyKnockback)
+        {
+            Vector3 pushDir = transform.position - hitSourcePosition;
+            pushDir.y = 0f;
+
+            if (pushDir.sqrMagnitude < 0.001f)
+            {
+                pushDir = -transform.forward;
+            }
+            else
+            {
+                pushDir.Normalize();
+            }
+
+            knockbackVelocity = pushDir * knockbackForce;
+            knockbackTimer = knockbackDuration;
+        }
     }
 
     private void StartRoll()
@@ -298,6 +362,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void PlayDrinkPotionAnimation()
+    {
+        if (isAttacking)
+        {
+            ResetCombo();
+        }
+        if (animator != null)
+        {
+            animator.ResetTrigger("DrinkPotion");
+            animator.SetTrigger("DrinkPotion");
+        }
+    }
     private void Attack()
     {
         AnimatorStateInfo stateInfo = animator != null ? animator.GetCurrentAnimatorStateInfo(0) : default;
