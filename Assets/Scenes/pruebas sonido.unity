@@ -890,6 +890,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5418127362522498652, guid: 500bc806847faad43a3f63759b7c84e0, type: 3}
+      propertyPath: golpeclip
+      value: 
+      objectReference: {fileID: 8300000, guid: dbd5352bd4a778547be5cea7ab6af743, type: 3}
+    - target: {fileID: 5418127362522498652, guid: 500bc806847faad43a3f63759b7c84e0, type: 3}
+      propertyPath: magiaclip
+      value: 
+      objectReference: {fileID: 8300000, guid: f2d48cb89d7cdd145864a9b8c1d55a3b, type: 3}
+    - target: {fileID: 5418127362522498652, guid: 500bc806847faad43a3f63759b7c84e0, type: 3}
+      propertyPath: saltoclip
+      value: 
+      objectReference: {fileID: 8300000, guid: 73019c2fd9549e94c9f3a78ecf70e511, type: 3}
+    - target: {fileID: 5418127362522498652, guid: 500bc806847faad43a3f63759b7c84e0, type: 3}
+      propertyPath: muerteclip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7a6f4a2df75e0be498643a24fc7fa8fb, type: 3}
+    - target: {fileID: 5418127362522498652, guid: 500bc806847faad43a3f63759b7c84e0, type: 3}
+      propertyPath: volumenPaso
+      value: 0.127
+      objectReference: {fileID: 0}
     - target: {fileID: 7437766346185184384, guid: 500bc806847faad43a3f63759b7c84e0, type: 3}
       propertyPath: cameraTransform
       value: 
