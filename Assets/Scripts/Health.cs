@@ -239,10 +239,13 @@ public class Health : MonoBehaviour
         Collider[] allColliders = GetComponentsInChildren<Collider>();
         foreach (Collider c in allColliders)
         {
-            if (c.isTrigger)
-            {
-                c.enabled = false;
-            }
+            c.enabled = false;
+        }
+
+        UnityEngine.AI.NavMeshAgent agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        if (agent != null)
+        {
+            agent.enabled = false;
         }
     }
 
