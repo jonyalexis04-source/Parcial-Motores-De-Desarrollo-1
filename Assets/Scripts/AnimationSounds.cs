@@ -19,87 +19,79 @@ public class AnimationSounds : MonoBehaviour
     public float intervaloMinimoPaso = 0.15f;
     float ultimoPaso;
 
+    private void Awake()
+    {
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponentInChildren<AudioSource>();
+        }
+    }
+
+    private void ReproducirClip(AudioClip clip, float volumen = 1f)
+    {
+        if (audioSource == null || clip == null)
+        {
+            return;
+        }
+
+        audioSource.pitch = 1f;
+        audioSource.PlayOneShot(clip, volumen);
+    }
+
     public void SonidoPaso()
     {
         if (Time.time - ultimoPaso < intervaloMinimoPaso) return;
         ultimoPaso = Time.time;
 
-        audioSource.pitch = 1f;
-        audioSource.PlayOneShot(pasoClip);
+        ReproducirClip(pasoClip, volumenPaso);
     }
 
     public void SonidoAtaque()
     {
-        audioSource.pitch = 1f;
-        audioSource.PlayOneShot(ataqueClip);
+        ReproducirClip(ataqueClip, volumenAtaque);
     }
 
     public void SonidoDash()
     {
-        audioSource.pitch = 1f;
-        audioSource.PlayOneShot(dashClip);
+        ReproducirClip(dashClip, volumenDash);
     }
 
     public void Sonidoconsumible()
     {
-        audioSource.pitch = 1f;
-        audioSource.PlayOneShot(consumibleclip);
+        ReproducirClip(consumibleclip);
     }
+
     public void Sonidomuerte()
     {
-        audioSource.pitch = 1f;
-        audioSource.PlayOneShot(muerteclip);
+        ReproducirClip(muerteclip);
     }
+
     public void Sonidogolpe()
     {
-        audioSource.pitch = 1f;
-        audioSource.PlayOneShot(golpeclip);
+        ReproducirClip(golpeclip);
     }
+
     public void Sonidomagia()
     {
-        audioSource.pitch = 1f;
-        audioSource.PlayOneShot(magiaclip);
+        ReproducirClip(magiaclip);
     }
+
     public void Sonidosalto()
     {
-        audioSource.pitch = 1f;
-        audioSource.PlayOneShot(saltoclip);
+        ReproducirClip(saltoclip);
     }
 
-    public void golpe()
-    {
-        Sonidogolpe();
-    }
-
-    public void ataque()
-    {
-        SonidoAtaque();
-    }
-
-    public void paso()
-    {
-        SonidoPaso();
-    }
-
-    public void dash()
-    {
-        SonidoDash();
-    }
-
-    public void consumible()
-    {
-        Sonidoconsumible();
-    }
-    public void muerte()
-    {
-        Sonidomuerte();
-    }
-    public void magia()
-    {
-        Sonidomagia();
-    }
-    public void salto()
-    {
-        Sonidosalto();
-    }
+    public void golpe() => Sonidogolpe();
+    public void ataque() => SonidoAtaque();
+    public void paso() => SonidoPaso();
+    public void dash() => SonidoDash();
+    public void consumible() => Sonidoconsumible();
+    public void muerte() => Sonidomuerte();
+    public void magia() => Sonidomagia();
+    public void salto() => Sonidosalto();
 }
