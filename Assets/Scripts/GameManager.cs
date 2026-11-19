@@ -13,6 +13,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void TriggerVictory()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        PlayerController playerScript = FindFirstObjectByType<PlayerController>();
+        if (playerScript != null)
+        {
+            playerScript.enabled = false;
+        }
+
+        if (victoryPanel != null)
+        {
+            victoryPanel.SetActive(true);
+        }
+    }
+
     public void CheckEnemiesAlive()
     {
         Invoke(nameof(EvaluateVictory), 0.2f);
@@ -20,7 +37,6 @@ public class GameManager : MonoBehaviour
 
     private void EvaluateVictory()
     {
-        
         Enemy[] enemies = FindObjectsByType<Enemy>(FindObjectsSortMode.None);
 
         int aliveEnemies = 0;
@@ -35,13 +51,7 @@ public class GameManager : MonoBehaviour
 
         if (aliveEnemies == 0)
         {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-
-            if (victoryPanel != null)
-            {
-                victoryPanel.SetActive(true);
-            }
+            TriggerVictory();
         }
     }
 
