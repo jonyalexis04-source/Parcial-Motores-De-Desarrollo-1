@@ -177,11 +177,44 @@ public class Health : MonoBehaviour
             }
         }
 
-        
         Collider[] allColliders = GetComponentsInChildren<Collider>();
         foreach (Collider c in allColliders)
         {
             c.enabled = false;
         }
+    }
+
+    public void RespawnHeal()
+    {
+        Debug.Log("[Health] Entrando a RespawnHeal");
+        currentHealth = maxHealth;
+        currentMana = maxMana;
+
+        UpdateHealthUI();
+        UpdateManaUI();
+
+        Debug.Log($"[Health] gameOverPanel asignado: {gameOverPanel != null}");
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(false);
+        }
+
+        PlayerController playerScript = GetComponent<PlayerController>();
+        Debug.Log($"[Health] playerScript: {playerScript}");
+        if (playerScript != null)
+        {
+            playerScript.enabled = true;
+        }
+
+        Collider[] allColliders = GetComponentsInChildren<Collider>();
+        foreach (Collider c in allColliders)
+        {
+            c.enabled = true;
+        }
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        Debug.Log("[Health] RespawnHeal terminado");
     }
 }

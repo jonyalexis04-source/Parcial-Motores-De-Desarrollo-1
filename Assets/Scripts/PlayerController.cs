@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     public float magicManaCost = 20f;
     public float magicCooldown = 0.8f;
     private float nextMagicTime = 0f;
+    public GameObject magicCrosshair;
 
     public Transform cameraTransform;
     public MeleeWeapon meleeWeapon;
@@ -90,6 +91,11 @@ public class PlayerController : MonoBehaviour
         if (animator != null)
         {
             animator.SetBool("IsAiming", isAiming);
+        }
+
+        if(magicCrosshair != null)
+        {
+            magicCrosshair.SetActive(isAiming);
         }
 
         bool rollPressed = inputActions.Player.Roll.triggered;
@@ -267,10 +273,9 @@ public class PlayerController : MonoBehaviour
 
         if (magicPrefab != null && magicSpawnPoint != null && health != null)
         {
-            // Intentamos descontar el maná directamente en Health.cs
             if (!health.UseMana(magicManaCost))
             {
-                Debug.Log("Sin maná suficiente.");
+                Debug.Log("No hay maná.");
                 return;
             }
 

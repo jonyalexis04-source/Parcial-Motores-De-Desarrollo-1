@@ -78,7 +78,7 @@ GameObject:
   - component: {fileID: 7437766346185184384}
   - component: {fileID: 6439843793683730612}
   - component: {fileID: 3302065158474937228}
-  - component: {fileID: 3650602022904132067}
+  - component: {fileID: 6114696025059064006}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -233,11 +233,8 @@ MonoBehaviour:
   rollDuration: 0.55
   iFramesDuration: 0.35
   rollCooldown: 1.15
-  maxMana: 100
-  currentMana: 100
   magicManaCost: 20
   magicCooldown: 0.8
-  manaText: {fileID: 0}
   cameraTransform: {fileID: 0}
   meleeWeapon: {fileID: 3505162514340203032}
   weaponInHand: {fileID: 3081903546717916287}
@@ -274,9 +271,12 @@ MonoBehaviour:
   hasHitAnimation: 0
   hyperArmorWhileAttacking: 1
   hitStunCooldown: 2.5
+  healthBar: {fileID: 0}
   healthText: {fileID: 0}
   gameOverPanel: {fileID: 0}
---- !u!114 &3650602022904132067
+  maxMana: 100
+  manaBar: {fileID: 0}
+--- !u!114 &6114696025059064006
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
