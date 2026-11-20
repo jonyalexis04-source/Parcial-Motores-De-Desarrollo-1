@@ -42,6 +42,7 @@ public class Health : MonoBehaviour
 
         UpdateHealthUI();
         UpdateManaUI();
+        NotifyAudioState(false);
     }
 
     public void TakeDamage(float amount, bool applyKnockback = false, Vector3 hitSourcePosition = default)
@@ -57,6 +58,7 @@ public class Health : MonoBehaviour
         Debug.Log($"{gameObject.name} recibió {amount} de daño. Vida actual: {currentHealth}");
 
         UpdateHealthUI();
+        NotifyAudioState(true);
 
         if (IsDead)
         {
@@ -117,6 +119,7 @@ public class Health : MonoBehaviour
 
         currentHealth = Mathf.Clamp(currentHealth + amount, 0f, maxHealth);
         UpdateHealthUI();
+        NotifyAudioState(false);
     }
 
     public bool UseMana(float amount)
@@ -247,6 +250,8 @@ public class Health : MonoBehaviour
         {
             agent.enabled = false;
         }
+
+        NotifyAudioState(false);
     }
 
     public void RespawnHeal()
@@ -282,5 +287,17 @@ public class Health : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        NotifyAudioState(false);
+    }
+
+    private void NotifyAudioState(bool accionActiva = false)
+    {
+        if (GetComponent<PlayerController>() == null) return;
+
+        DynamicAudioController audioCtrl = FindFirstObjectByType<DynamicAudioController>();
+        if (audioCtrl != null)
+        {
+            audioCtrl.ActualizarAudioPorEstado(currentHealth, maxHealth, accionActiva);
+        }
     }
 }
